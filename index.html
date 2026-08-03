@@ -47,10 +47,7 @@
             gap: 12px;
             margin-bottom: 20px;
         }
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
+        .input-row { display: flex; gap: 10px; }
         input[type="number"], select {
             padding: 15px;
             font-size: 16px;
@@ -60,9 +57,7 @@
             flex: 1;
             text-align: center;
         }
-        input[type="number"]:focus, select:focus {
-            border-color: #1a237e;
-        }
+        input[type="number"]:focus, select:focus { border-color: #1a237e; }
         button.submit-btn {
             background-color: #1a237e;
             color: white;
@@ -72,131 +67,187 @@
             font-weight: bold;
             border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button.submit-btn:hover { background-color: #3949ab; }
-        
-        /* 탭 메뉴 스타일 */
-        #result-section { display: none; margin-top: 20px; }
-        .tabs {
-            display: flex;
-            background-color: #f1f3f5;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 15px 0;
-            text-align: center;
-            font-weight: bold;
-            font-size: 16px;
-            color: #868e96;
-            cursor: pointer;
-            border: none;
-            background: none;
             transition: 0.3s;
         }
-        .tab-btn.active {
-            background-color: #1a237e;
-            color: white;
-        }
-        .tab-content {
+        
+        /* 로딩 애니메이션 스타일 */
+        #loading-section {
             display: none;
-            line-height: 1.8;
-            font-size: 15px;
-            color: #424242;
-            text-align: justify;
-            padding: 15px;
+            text-align: center;
+            padding: 50px 0;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #1a237e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 16px; font-weight: bold; color: #1a237e; }
+
+        /* 결과창 스타일 */
+        #result-section { display: none; margin-top: 10px; }
+        
+        /* 운세 그래프 (게이지 바) */
+        .score-board {
             background-color: #f8f9fa;
             border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
             border: 1px solid #e9ecef;
+        }
+        .score-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .score-item:last-child { margin-bottom: 0; }
+        .score-label { width: 70px; color: #424242; }
+        .bar-bg {
+            flex: 1;
+            height: 12px;
+            background-color: #e0e0e0;
+            border-radius: 6px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease-in-out;
+        }
+        .fill-wealth { background: linear-gradient(90deg, #ffd54f, #ffb300); }
+        .fill-work { background: linear-gradient(90deg, #81c784, #4caf50); }
+        .fill-luck { background: linear-gradient(90deg, #64b5f6, #2196f3); }
+        .score-num { width: 40px; text-align: right; color: #1a237e; }
+
+        /* 행운의 아이템 섹션 */
+        .lucky-items-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-bottom: 20px;
         }
+        .lucky-box {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .lucky-title { font-size: 12px; color: #757575; margin-bottom: 5px; }
+        .lucky-value { font-weight: bold; color: #333; font-size: 16px; }
+
+        /* 탭 메뉴 */
+        .tabs { display: flex; background-color: #f1f3f5; border-radius: 12px; overflow: hidden; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 12px 0; text-align: center; font-weight: bold; font-size: 15px; color: #868e96; cursor: pointer; border: none; background: none; }
+        .tab-btn.active { background-color: #1a237e; color: white; }
+        .tab-content { display: none; line-height: 1.8; font-size: 15px; color: #424242; padding: 15px; background-color: #f8f9fa; border-radius: 12px; border: 1px solid #e9ecef; margin-bottom: 20px; text-align: justify; }
         .tab-content.active { display: block; }
         
-        /* 로또 섹션 스타일 */
-        .lotto-section {
-            padding: 20px;
-            background: linear-gradient(135deg, #fff9c4, #fff59d);
-            border-radius: 12px;
-            border: 1px solid #ffe082;
-            text-align: center;
-        }
-        .lotto-ball-container {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        .lotto-ball {
-            width: 45px;
-            height: 45px;
-            background-color: #ffca28;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        /* 로또 섹션 */
+        .lotto-section { padding: 20px; background: linear-gradient(135deg, #fff9c4, #fff59d); border-radius: 12px; border: 1px solid #ffe082; text-align: center; }
+        .lotto-ball-container { display: flex; justify-content: center; gap: 8px; margin: 15px 0; flex-wrap: wrap; }
+        .lotto-ball { width: 45px; height: 45px; background-color: #ffca28; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 18px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="ad-space">구글 애드센스 상단 배너 자리</div>
-
     <h1>💰 나의사주, 나의로또</h1>
     
-    <div class="input-group">
+    <div class="input-group" id="input-section">
         <label style="font-size:14px; font-weight:bold; color:#1a237e;">나의 탄생 정보 입력</label>
         <div class="input-row">
             <input type="number" id="birthDate" placeholder="생년월일 8자리 (예: 19800515)" style="flex: 2;"/>
             <select id="birthTime" style="flex: 1;">
                 <option value="99">모름</option>
-                <option value="23">자시 (23~01)</option>
-                <option value="1">축시 (01~03)</option>
-                <option value="3">인시 (03~05)</option>
-                <option value="5">묘시 (05~07)</option>
-                <option value="7">진시 (07~09)</option>
-                <option value="9">사시 (09~11)</option>
-                <option value="11">오시 (11~13)</option>
-                <option value="13">미시 (13~15)</option>
-                <option value="15">신시 (15~17)</option>
-                <option value="17">유시 (17~19)</option>
-                <option value="19">술시 (19~21)</option>
-                <option value="21">해시 (21~23)</option>
+                <option value="23">자시(23~01)</option>
+                <option value="1">축시(01~03)</option>
+                <option value="3">인시(03~05)</option>
+                <option value="5">묘시(05~07)</option>
+                <option value="7">진시(07~09)</option>
+                <option value="9">사시(09~11)</option>
+                <option value="11">오시(11~13)</option>
+                <option value="13">미시(13~15)</option>
+                <option value="15">신시(15~17)</option>
+                <option value="17">유시(17~19)</option>
+                <option value="19">술시(19~21)</option>
+                <option value="21">해시(21~23)</option>
             </select>
         </div>
-        <button class="submit-btn" onclick="generateResult()">정밀 운세 & 행운 번호 뽑기</button>
+        <button class="submit-btn" onclick="startLoading()">정밀 운세 & 행운 번호 뽑기</button>
+    </div>
+
+    <!-- 로딩 섹션 (초기 숨김) -->
+    <div id="loading-section">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loading-text">사주 명식을 분석 중입니다...</div>
     </div>
 
     <!-- 결과 섹션 -->
     <div id="result-section">
-        <!-- 탭 메뉴 -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('annual')">올해운</button>
-            <button class="tab-btn" onclick="switchTab('monthly')">이달운</button>
-            <button class="tab-btn" onclick="switchTab('daily')">오늘운</button>
+        <!-- 1. 운세 지수 그래프 -->
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">금전운</div>
+                <div class="bar-bg"><div class="bar-fill fill-wealth" id="bar-wealth" style="width:0%;"></div></div>
+                <div class="score-num" id="score-wealth">0점</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">성공운</div>
+                <div class="bar-bg"><div class="bar-fill fill-work" id="bar-work" style="width:0%;"></div></div>
+                <div class="score-num" id="score-work">0점</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">종합운</div>
+                <div class="bar-bg"><div class="bar-fill fill-luck" id="bar-luck" style="width:0%;"></div></div>
+                <div class="score-num" id="score-luck">0점</div>
+            </div>
         </div>
 
-        <!-- 탭 내용: 올해운 -->
-        <div id="annual" class="tab-content active"></div>
-        
-        <!-- 탭 내용: 이달운 -->
-        <div id="monthly" class="tab-content"></div>
-        
-        <!-- 탭 내용: 오늘운 -->
-        <div id="daily" class="tab-content"></div>
+        <!-- 2. 행운의 아이템 -->
+        <div class="lucky-items-grid">
+            <div class="lucky-box">
+                <div class="lucky-title">🎨 행운의 색상</div>
+                <div class="lucky-value" id="lucky-color">-</div>
+            </div>
+            <div class="lucky-box">
+                <div class="lucky-title">🧭 행운의 방향</div>
+                <div class="lucky-value" id="lucky-dir">-</div>
+            </div>
+            <div class="lucky-box">
+                <div class="lucky-title">🤝 나만의 귀인</div>
+                <div class="lucky-value" id="lucky-person">-</div>
+            </div>
+            <div class="lucky-box">
+                <div class="lucky-title">💎 행운의 물건</div>
+                <div class="lucky-value" id="lucky-item">-</div>
+            </div>
+        </div>
 
-        <!-- 로또 추천 (항상 고정) -->
+        <!-- 3. 탭 메뉴 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('daily')">오늘운</button>
+            <button class="tab-btn" onclick="switchTab('monthly')">이달운</button>
+            <button class="tab-btn" onclick="switchTab('annual')">올해운</button>
+        </div>
+        <div id="daily" class="tab-content active"></div>
+        <div id="monthly" class="tab-content"></div>
+        <div id="annual" class="tab-content"></div>
+
+        <!-- 4. 로또 추천 -->
         <div class="lotto-section">
-            <h2 style="font-size: 18px; color: #d84315; margin-top: 0;">🌟 금전운 기반 맞춤 로또 번호 🌟</h2>
-            <p style="font-size: 13px; color: #555; margin-bottom: 5px;">* 귀하의 생년월일과 태어난 시간을 결합한 재물 파동 번호입니다.</p>
+            <h2 style="font-size: 18px; color: #d84315; margin-top: 0;">🌟 재물 파동 맞춤 로또 번호 🌟</h2>
+            <p style="font-size: 13px; color: #555; margin-bottom: 5px;">* 귀하의 생년월일과 시간을 결합한 행운 번호입니다.</p>
             <div class="lotto-ball-container" id="lotto-balls"></div>
         </div>
     </div>
@@ -205,7 +256,6 @@
 </div>
 
 <script>
-    // 시드 고정 난수 생성기
     function mulberry32(a) {
         return function() {
             var t = a += 0x6D2B79F5;
@@ -215,63 +265,96 @@
         }
     }
 
-    // 탭 전환 함수
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
         document.getElementById(tabId).classList.add('active');
         event.target.classList.add('active');
+    }
+
+    function startLoading() {
+        const birthInput = document.getElementById('birthDate').value;
+        if(birthInput.length !== 8) {
+            alert("생년월일 8자리를 정확히 입력해주세요! (예: 19800515)");
+            return;
+        }
+        
+        // 입력창 숨기고 로딩창 띄우기
+        document.getElementById('input-section').style.display = 'none';
+        document.getElementById('loading-section').style.display = 'block';
+        
+        const loadingText = document.getElementById('loading-text');
+        
+        // 시간차를 두고 로딩 텍스트 변경 (체류시간 확보)
+        setTimeout(() => { loadingText.innerText = "우주의 기운을 모으는 중..."; }, 1200);
+        setTimeout(() => { loadingText.innerText = "맞춤 로또 번호를 추출합니다..."; }, 2400);
+        
+        // 3.5초 뒤에 결과창 띄우기
+        setTimeout(() => {
+            document.getElementById('loading-section').style.display = 'none';
+            generateResult();
+        }, 3500);
     }
 
     function generateResult() {
         const birthInput = document.getElementById('birthDate').value;
         const timeInput = document.getElementById('birthTime').value;
-        
-        if(birthInput.length !== 8) {
-            alert("생년월일 8자리를 정확히 입력해주세요! (예: 19800515)");
-            return;
-        }
-
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
         const date = today.getDate();
         
-        // 날짜/시간 정보를 합쳐서 베이스 시드(Seed) 생성
         const baseSeed = parseInt(birthInput) + parseInt(timeInput);
+        const dailySeed = baseSeed + year + month + date;
+        const randomFunc = mulberry32(dailySeed);
+
+        // 1. 점수 및 그래프 계산 (70 ~ 98점 사이)
+        const wealthScore = Math.floor(randomFunc() * 29) + 70;
+        const workScore = Math.floor(randomFunc() * 29) + 70;
+        const luckScore = Math.floor(randomFunc() * 29) + 70;
+
+        document.getElementById('result-section').style.display = 'block';
         
-        // --- 1. 운세 텍스트 생성 (애드센스 통과용 풍성한 텍스트) ---
-        
-        // 올해운 (연도 기준 시드)
-        const randomAnnual = mulberry32(baseSeed + year);
-        const annualText = `
+        // 게이지 바 애니메이션 적용 (약간의 딜레이 후 실행)
+        setTimeout(() => {
+            document.getElementById('bar-wealth').style.width = wealthScore + '%';
+            document.getElementById('score-wealth').innerText = wealthScore + '점';
+            document.getElementById('bar-work').style.width = workScore + '%';
+            document.getElementById('score-work').innerText = workScore + '점';
+            document.getElementById('bar-luck').style.width = luckScore + '%';
+            document.getElementById('score-luck').innerText = luckScore + '점';
+        }, 100);
+
+        // 2. 행운의 아이템 매칭
+        const colors = ["황금색", "검은색", "붉은색", "푸른색", "흰색", "짙은 녹색", "보라색"];
+        const directions = ["동쪽", "서쪽", "남쪽", "북쪽", "남동쪽", "북서쪽"];
+        const persons = ["쥐띠", "소띠", "호랑이띠", "토끼띠", "용띠", "뱀띠", "말띠", "양띠", "원숭이띠", "닭띠", "개띠", "돼지띠"];
+        const items = ["가죽 지갑", "금속 액세서리", "작은 거울", "검은색 펜", "손수건", "향수", "동전"];
+
+        document.getElementById('lucky-color').innerText = colors[Math.floor(randomFunc() * colors.length)];
+        document.getElementById('lucky-dir').innerText = directions[Math.floor(randomFunc() * directions.length)];
+        document.getElementById('lucky-person').innerText = persons[Math.floor(randomFunc() * persons.length)];
+        document.getElementById('lucky-item').innerText = items[Math.floor(randomFunc() * items.length)];
+
+        // 3. 텍스트 운세 적용
+        document.getElementById('annual').innerHTML = `
             <strong>[${year}년 전체 운세 흐름]</strong><br><br>
-            태어나신 ${birthInput.substring(0,4)}년의 고유한 오행과 귀하가 태어난 시간대의 기운이 ${year}년의 거대한 우주적 에너지와 만나는 해입니다. 전체적인 명리학적 관점에서 볼 때, 올해는 지금까지 축적해 온 귀하의 잠재력이 외부로 발현되는 아주 중요한 전환점입니다. <br><br>
-            특히 금전적인 부분에서 <strong>기존의 막혀있던 흐름이 뚫리고 새로운 재물의 파이프라인이 형성</strong>될 가능성이 매우 높습니다. ${year}년 중반기를 기점으로 귀인의 도움이 닿거나 뜻밖의 투자처에서 좋은 소식을 들을 수 있는 강력한 운기가 형성되어 있습니다. 조급해하지 말고 큰 흐름을 타는 지혜가 필요합니다.
+            태어나신 ${birthInput.substring(0,4)}년의 고유한 오행과 귀하가 태어난 시간대의 기운이 ${year}년의 거대한 우주적 에너지와 만나는 해입니다. 올해는 지금까지 축적해 온 귀하의 잠재력이 외부로 발현되는 아주 중요한 전환점입니다. <br><br>
+            특히 금전적인 부분에서 <strong>기존의 막혀있던 흐름이 뚫리고 새로운 파이프라인이 형성</strong>될 가능성이 높습니다. 중반기를 기점으로 귀인의 도움이 닿거나 뜻밖의 좋은 소식을 들을 수 있는 강력한 운기가 형성되어 있습니다.
         `;
-        document.getElementById('annual').innerHTML = annualText;
-
-        // 이달운 (연도+월 기준 시드)
-        const randomMonthly = mulberry32(baseSeed + year + month);
-        const monthlyText = `
+        document.getElementById('monthly').innerHTML = `
             <strong>[${month}월 재물운 및 총운]</strong><br><br>
-            이번 ${month}월은 우주의 달의 기운이 귀하의 사주 원국과 강하게 공명하는 시기입니다. 이달의 핵심 키워드는 '선택과 집중'입니다. 여러 곳에 에너지를 분산시키기보다는 현재 가장 가능성이 보이는 한 가지 금전적 목표에 집중할 때 기대 이상의 성과를 거둘 수 있습니다.<br><br>
-            <strong>이달의 금전운 온도는 매우 뜨겁습니다.</strong> 평소 무심코 지나쳤던 숫자나 직감적으로 끌리는 결정들이 결국 긍정적인 재물로 이어질 확률이 높은 달입니다. 주변 사람들의 조언보다는 본인 내면의 직관(태어난 시간의 기운)을 믿고 움직이시길 권장합니다.
+            이번 ${month}월은 우주의 달의 기운이 귀하의 사주 원국과 강하게 공명하는 시기입니다. 이달의 핵심 키워드는 '선택과 집중'입니다. <br><br>
+            <strong>이달의 금전운 온도는 매우 뜨겁습니다.</strong> 평소 무심코 지나쳤던 숫자나 직감적으로 끌리는 결정들이 결국 긍정적인 재물로 이어질 확률이 높은 달입니다. 본인 내면의 직관을 믿고 움직이시길 권장합니다.
         `;
-        document.getElementById('monthly').innerHTML = monthlyText;
-
-        // 오늘운 (오늘 날짜 전체 기준 시드)
-        const randomDaily = mulberry32(baseSeed + year + month + date);
-        const dailyText = `
+        document.getElementById('daily').innerHTML = `
             <strong>[오늘의 금전운 및 행운 지침]</strong><br><br>
-            태어난 생년월일과 시간의 정밀한 파동을 오늘의 일진(日辰)과 대조해 본 결과, <strong>오늘은 귀하의 재물적 감각이 최고조에 달하는 날</strong>입니다. 음양오행의 흐름이 금(金)과 수(水)의 기운을 보충해 주며, 재물이 새어나가는 것을 막고 횡재수를 끌어당기는 자력이 강해집니다.<br><br>
-            오늘 하루는 복권을 구매하거나 작은 투자를 시도해 보기에도 아주 좋은 기운이 흐르고 있습니다. 우주의 운행 원리와 귀하의 탄생 에너지를 교차 검증하여 추출된 아래의 '행운 숫자'를 주목해 보십시오. 밝고 긍정적인 마음가짐이 이 숫자들의 기운을 더욱 증폭시킬 것입니다.
+            태어난 정보의 정밀한 파동을 오늘의 일진(日辰)과 대조해 본 결과, <strong>오늘은 귀하의 재물적 감각이 최고조에 달하는 날</strong>입니다. 음양오행의 흐름이 부족한 기운을 보충해 주며, 재물이 새어나가는 것을 막고 횡재수를 끌어당기는 자력이 강해집니다.<br><br>
+            오늘 하루는 복권을 구매하거나 작은 투자를 시도해 보기에도 아주 좋은 기운이 흐르고 있습니다. 밝고 긍정적인 마음가짐이 이 운기를 더욱 증폭시킬 것입니다.
         `;
-        document.getElementById('daily').innerHTML = dailyText;
 
-        // --- 2. 로또 번호 추출 (오늘 날짜 + 태어난 시간 완벽 조합) ---
-        const randomLotto = mulberry32(baseSeed + year + month + date + 777); // 로또 전용 시드
+        // 4. 로또 번호 추출
+        const randomLotto = mulberry32(dailySeed + 777);
         let numbers = [];
         while(numbers.length < 6) {
             let num = Math.floor(randomLotto() * 45) + 1;
@@ -287,9 +370,6 @@
             ball.innerText = num;
             ballsContainer.appendChild(ball);
         });
-
-        // 결과창 보여주기
-        document.getElementById('result-section').style.display = 'block';
     }
 </script>
 
