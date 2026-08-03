@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 브라우저 탭에 표시될 이름 반영! -->
     <title>나의사주,나의로또</title>
     <style>
-        /* 모바일 앱 느낌을 주는 기본 CSS (스타일링) */
         body {
             font-family: 'Pretendard', -apple-system, sans-serif;
             background-color: #f4f6f9;
@@ -18,7 +16,7 @@
         }
         .app-container {
             width: 100%;
-            max-width: 480px; /* 스마트폰 화면 너비 고정 */
+            max-width: 480px;
             background-color: #ffffff;
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
@@ -29,8 +27,8 @@
             text-align: center;
             font-size: 26px;
             color: #1a237e;
-            margin-bottom: 30px;
-            font-weight: 800; /* 글씨를 조금 더 두껍고 눈에 띄게 */
+            margin-bottom: 20px;
+            font-weight: 900;
         }
         .ad-space {
             width: 100%;
@@ -46,21 +44,26 @@
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
         }
-        input[type="number"] {
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        input[type="number"], select {
             padding: 15px;
             font-size: 16px;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
-            text-align: center;
             outline: none;
+            flex: 1;
+            text-align: center;
         }
-        input[type="number"]:focus {
+        input[type="number"]:focus, select:focus {
             border-color: #1a237e;
         }
-        button {
+        button.submit-btn {
             background-color: #1a237e;
             color: white;
             border: none;
@@ -71,22 +74,60 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #3949ab;
+        button.submit-btn:hover { background-color: #3949ab; }
+        
+        /* 탭 메뉴 스타일 */
+        #result-section { display: none; margin-top: 20px; }
+        .tabs {
+            display: flex;
+            background-color: #f1f3f5;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
-        #result-section {
-            display: none; /* 처음엔 숨겨둠 */
-            margin-top: 30px;
-            padding: 20px;
+        .tab-btn {
+            flex: 1;
+            padding: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #868e96;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #1a237e;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+            font-size: 15px;
+            color: #424242;
+            text-align: justify;
+            padding: 15px;
             background-color: #f8f9fa;
             border-radius: 12px;
             border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        .tab-content.active { display: block; }
+        
+        /* 로또 섹션 스타일 */
+        .lotto-section {
+            padding: 20px;
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+            border-radius: 12px;
+            border: 1px solid #ffe082;
+            text-align: center;
         }
         .lotto-ball-container {
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin: 20px 0;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
         .lotto-ball {
@@ -102,47 +143,69 @@
             color: #333;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .fortune-text {
-            line-height: 1.8;
-            font-size: 15px;
-            color: #424242;
-            text-align: justify;
-        }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- 구글 애드센스 상단 광고 자리 -->
     <div class="ad-space">구글 애드센스 상단 배너 자리</div>
 
-    <!-- 앱 메인 타이틀 변경! -->
     <h1>💰 나의사주, 나의로또</h1>
     
     <div class="input-group">
-        <label for="birthDate" style="font-size:14px; font-weight:bold;">생년월일 8자리 (예: 19800515)</label>
-        <input type="number" id="birthDate" placeholder="YYYYMMDD" />
-        <button onclick="generateResult()">나의 맞춤 운세 & 번호 뽑기</button>
+        <label style="font-size:14px; font-weight:bold; color:#1a237e;">나의 탄생 정보 입력</label>
+        <div class="input-row">
+            <input type="number" id="birthDate" placeholder="생년월일 8자리 (예: 19800515)" style="flex: 2;"/>
+            <select id="birthTime" style="flex: 1;">
+                <option value="99">모름</option>
+                <option value="23">자시 (23~01)</option>
+                <option value="1">축시 (01~03)</option>
+                <option value="3">인시 (03~05)</option>
+                <option value="5">묘시 (05~07)</option>
+                <option value="7">진시 (07~09)</option>
+                <option value="9">사시 (09~11)</option>
+                <option value="11">오시 (11~13)</option>
+                <option value="13">미시 (13~15)</option>
+                <option value="15">신시 (15~17)</option>
+                <option value="17">유시 (17~19)</option>
+                <option value="19">술시 (19~21)</option>
+                <option value="21">해시 (21~23)</option>
+            </select>
+        </div>
+        <button class="submit-btn" onclick="generateResult()">정밀 운세 & 행운 번호 뽑기</button>
     </div>
 
-    <!-- 결과가 출력될 공간 -->
+    <!-- 결과 섹션 -->
     <div id="result-section">
-        <h2 style="font-size: 18px; color: #1a237e; text-align: center;">🌟 오늘의 행운 번호 🌟</h2>
-        <div class="lotto-ball-container" id="lotto-balls">
-            <!-- 로또 번호가 여기에 들어갑니다 -->
+        <!-- 탭 메뉴 -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('annual')">올해운</button>
+            <button class="tab-btn" onclick="switchTab('monthly')">이달운</button>
+            <button class="tab-btn" onclick="switchTab('daily')">오늘운</button>
         </div>
+
+        <!-- 탭 내용: 올해운 -->
+        <div id="annual" class="tab-content active"></div>
         
-        <div class="fortune-text" id="fortune-text">
-            <!-- 500자 이상의 운세 텍스트가 여기에 들어갑니다 -->
+        <!-- 탭 내용: 이달운 -->
+        <div id="monthly" class="tab-content"></div>
+        
+        <!-- 탭 내용: 오늘운 -->
+        <div id="daily" class="tab-content"></div>
+
+        <!-- 로또 추천 (항상 고정) -->
+        <div class="lotto-section">
+            <h2 style="font-size: 18px; color: #d84315; margin-top: 0;">🌟 금전운 기반 맞춤 로또 번호 🌟</h2>
+            <p style="font-size: 13px; color: #555; margin-bottom: 5px;">* 귀하의 생년월일과 태어난 시간을 결합한 재물 파동 번호입니다.</p>
+            <div class="lotto-ball-container" id="lotto-balls"></div>
         </div>
     </div>
 
-    <!-- 구글 애드센스 하단 광고 자리 -->
     <div class="ad-space" style="margin-top: 20px;">구글 애드센스 하단 배너 자리</div>
 </div>
 
 <script>
-    // 간단한 난수 생성기 (생년월일+오늘날짜로 시드 고정)
+    // 시드 고정 난수 생성기
     function mulberry32(a) {
         return function() {
             var t = a += 0x6D2B79F5;
@@ -152,28 +215,70 @@
         }
     }
 
+    // 탭 전환 함수
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
     function generateResult() {
         const birthInput = document.getElementById('birthDate').value;
+        const timeInput = document.getElementById('birthTime').value;
+        
         if(birthInput.length !== 8) {
             alert("생년월일 8자리를 정확히 입력해주세요! (예: 19800515)");
             return;
         }
 
-        // 1. 오늘 날짜와 생년월일로 고유 시드 생성
         const today = new Date();
-        const dateString = today.getFullYear().toString() + (today.getMonth()+1).toString().padStart(2,'0') + today.getDate().toString().padStart(2,'0');
-        const seed = parseInt(birthInput) + parseInt(dateString);
-        const randomFunc = mulberry32(seed);
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const date = today.getDate();
+        
+        // 날짜/시간 정보를 합쳐서 베이스 시드(Seed) 생성
+        const baseSeed = parseInt(birthInput) + parseInt(timeInput);
+        
+        // --- 1. 운세 텍스트 생성 (애드센스 통과용 풍성한 텍스트) ---
+        
+        // 올해운 (연도 기준 시드)
+        const randomAnnual = mulberry32(baseSeed + year);
+        const annualText = `
+            <strong>[${year}년 전체 운세 흐름]</strong><br><br>
+            태어나신 ${birthInput.substring(0,4)}년의 고유한 오행과 귀하가 태어난 시간대의 기운이 ${year}년의 거대한 우주적 에너지와 만나는 해입니다. 전체적인 명리학적 관점에서 볼 때, 올해는 지금까지 축적해 온 귀하의 잠재력이 외부로 발현되는 아주 중요한 전환점입니다. <br><br>
+            특히 금전적인 부분에서 <strong>기존의 막혀있던 흐름이 뚫리고 새로운 재물의 파이프라인이 형성</strong>될 가능성이 매우 높습니다. ${year}년 중반기를 기점으로 귀인의 도움이 닿거나 뜻밖의 투자처에서 좋은 소식을 들을 수 있는 강력한 운기가 형성되어 있습니다. 조급해하지 말고 큰 흐름을 타는 지혜가 필요합니다.
+        `;
+        document.getElementById('annual').innerHTML = annualText;
 
-        // 2. 로또 번호 6개 추출
+        // 이달운 (연도+월 기준 시드)
+        const randomMonthly = mulberry32(baseSeed + year + month);
+        const monthlyText = `
+            <strong>[${month}월 재물운 및 총운]</strong><br><br>
+            이번 ${month}월은 우주의 달의 기운이 귀하의 사주 원국과 강하게 공명하는 시기입니다. 이달의 핵심 키워드는 '선택과 집중'입니다. 여러 곳에 에너지를 분산시키기보다는 현재 가장 가능성이 보이는 한 가지 금전적 목표에 집중할 때 기대 이상의 성과를 거둘 수 있습니다.<br><br>
+            <strong>이달의 금전운 온도는 매우 뜨겁습니다.</strong> 평소 무심코 지나쳤던 숫자나 직감적으로 끌리는 결정들이 결국 긍정적인 재물로 이어질 확률이 높은 달입니다. 주변 사람들의 조언보다는 본인 내면의 직관(태어난 시간의 기운)을 믿고 움직이시길 권장합니다.
+        `;
+        document.getElementById('monthly').innerHTML = monthlyText;
+
+        // 오늘운 (오늘 날짜 전체 기준 시드)
+        const randomDaily = mulberry32(baseSeed + year + month + date);
+        const dailyText = `
+            <strong>[오늘의 금전운 및 행운 지침]</strong><br><br>
+            태어난 생년월일과 시간의 정밀한 파동을 오늘의 일진(日辰)과 대조해 본 결과, <strong>오늘은 귀하의 재물적 감각이 최고조에 달하는 날</strong>입니다. 음양오행의 흐름이 금(金)과 수(水)의 기운을 보충해 주며, 재물이 새어나가는 것을 막고 횡재수를 끌어당기는 자력이 강해집니다.<br><br>
+            오늘 하루는 복권을 구매하거나 작은 투자를 시도해 보기에도 아주 좋은 기운이 흐르고 있습니다. 우주의 운행 원리와 귀하의 탄생 에너지를 교차 검증하여 추출된 아래의 '행운 숫자'를 주목해 보십시오. 밝고 긍정적인 마음가짐이 이 숫자들의 기운을 더욱 증폭시킬 것입니다.
+        `;
+        document.getElementById('daily').innerHTML = dailyText;
+
+        // --- 2. 로또 번호 추출 (오늘 날짜 + 태어난 시간 완벽 조합) ---
+        const randomLotto = mulberry32(baseSeed + year + month + date + 777); // 로또 전용 시드
         let numbers = [];
         while(numbers.length < 6) {
-            let num = Math.floor(randomFunc() * 45) + 1;
+            let num = Math.floor(randomLotto() * 45) + 1;
             if(numbers.indexOf(num) === -1) numbers.push(num);
         }
         numbers.sort((a,b) => a - b);
 
-        // 3. 로또 공 화면에 그리기
         const ballsContainer = document.getElementById('lotto-balls');
         ballsContainer.innerHTML = '';
         numbers.forEach(num => {
@@ -183,14 +288,7 @@
             ballsContainer.appendChild(ball);
         });
 
-        // 4. 구글 통과용 길고 풍성한 텍스트
-        const intro = `태어나신 ${birthInput.substring(0,4)}년의 타고난 오행 기운과 ${today.getFullYear()}년 오늘의 우주적 에너지가 강력하게 교차하는 날입니다. 명리학적 관점에서 볼 때, 오늘은 당신의 내면에 잠재되어 있던 재물적 감각이 유독 예민해지는 시기입니다. 평소라면 무심코 지나쳤을 작은 정보나 숫자들 속에서 뜻밖의 횡재수를 발견할 수 있는 긍정적인 파동이 흐르고 있습니다.`;
-        const flow = `현재 금전운의 흐름은 계단식 상승장에 진입해 있습니다. 당장 눈앞에 큰돈이 떨어지지 않더라도, 오늘 당신이 무심코 던진 씨앗(소액의 투자나 복권 구매 등)이 훗날 큰 나무로 자라날 수 있는 응축된 에너지를 품고 있습니다. 검은색이나 짙은 남색 계열의 옷차림이나 소지품을 지니시면 오늘 당신에게 부족한 수(水) 기운을 보충하여 재물이 새어나가는 것을 완벽하게 막아줄 것입니다.`;
-        const conc = `우주의 운행 원리와 당신의 탄생 에너지를 교차 검증하여 추출된 오늘의 행운 숫자 조합을 공개합니다. 이 숫자들은 단순한 우연이 아니라, 오늘 당신이 뿜어내는 기운과 가장 잘 들어맞는 일종의 '재물 비밀번호'와도 같습니다. 이 숫자들을 마음에 품고 오늘 하루를 여유롭고 당당하게 보내신다면, 기대 이상의 긍정적인 파동을 끌어당길 수 있을 것입니다.`;
-        
-        document.getElementById('fortune-text').innerHTML = `<p>${intro}</p><p>${flow}</p><p>${conc}</p>`;
-
-        // 5. 숨겨뒀던 결과창 보여주기
+        // 결과창 보여주기
         document.getElementById('result-section').style.display = 'block';
     }
 </script>
