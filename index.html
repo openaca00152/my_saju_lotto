@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>나의 사주, 나의 로또 - 정통 명리 데일리 대시보드</title>
     
+    <!-- 스마트폰 바탕화면 설치(웹앱)를 위한 고화질 아이콘 및 메타 태그 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="사주로또">
+    <!-- 고급스러운 네이비/골드 톤의 '운(運)' 로고 자동 생성 -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%231e293b'/><circle cx='96' cy='96' r='60' fill='%23d4af37'/><text x='96' y='112' font-size='50' font-family='sans-serif' font-weight='900' text-anchor='middle' fill='%231e293b'>運</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%231e293b'/><circle cx='96' cy='96' r='60' fill='%23d4af37'/><text x='96' y='112' font-size='50' font-family='sans-serif' font-weight='900' text-anchor='middle' fill='%231e293b'>運</text></svg>">
+
     <!-- 구글 애널리틱스 (실제 방문자 통계 확인용) 위치 -->
     <!-- 향후 구글 애널리틱스(GA4)에 가입하신 후 발급받은 추적 코드를 이 아래에 붙여넣으시면 됩니다. -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7983503652793859"
-     crossorigin="anonymous"></script>
+
     <style>
         :root { --primary-dark: #0f172a; --primary: #1e293b; --gold: #d4af37; --gold-light: #fef08a; --bg-color: #f8fafc; --text-main: #334155; }
         body { font-family: 'Pretendard', -apple-system, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; background-color: #ffffff; min-height: 100vh; box-shadow: 0 0 30px rgba(0,0,0,0.08); box-sizing: border-box; position: relative; overflow-x: hidden; }
         
-        /* 공통 헤더 */
         .hero-section { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 30px 20px 40px 20px; text-align: center; border-radius: 0 0 30px 30px; position: relative; }
         h1 { margin: 0; font-size: 26px; font-weight: 900; background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-sub { color: #cbd5e1; font-size: 13px; margin-top: 8px; }
 
-        /* 화면 전환용 클래스 */
         .screen { display: none; padding: 0 20px 20px 20px; animation: fadeIn 0.4s ease-in-out; }
         .screen.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 화면 1: 입력폼 */
         .input-card { background: white; border-radius: 20px; padding: 25px; margin: -20px 20px 20px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: relative; z-index: 10; }
         .input-group { display: flex; flex-direction: column; gap: 15px; }
         input[type="number"], select { padding: 15px; font-size: 15px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; font-weight: bold; }
@@ -32,28 +36,25 @@
         button.action-btn { background: linear-gradient(135deg, #d4af37, #f5d76e); color: #453200; border: none; padding: 16px; font-size: 18px; font-weight: 900; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); margin-top: 10px; width: 100%; transition: transform 0.2s; }
         button.action-btn:active { transform: scale(0.98); }
         
-        /* 실시간 참여자 수 (UX용) */
         .live-visitors { text-align: center; margin-top: 25px; font-size: 14px; color: #64748b; background: #f1f5f9; padding: 12px; border-radius: 12px; font-weight: bold; }
         .live-visitors span { color: #e11d48; font-size: 16px; }
 
-        /* 화면 2: 대시보드 (메뉴판) */
         .welcome-msg { text-align: center; margin-top: -15px; margin-bottom: 20px; font-weight: bold; color: var(--primary); font-size: 16px; background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; z-index: 10; margin-left: 20px; margin-right: 20px; }
         
-        /* 메인 하이라이트 버튼 (오늘의 운세) */
         .daily-hero-btn { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 16px; padding: 25px 20px; text-align: center; color: white; cursor: pointer; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.2); margin-bottom: 20px; border: 2px solid var(--gold); transition: transform 0.2s; }
         .daily-hero-btn:active { transform: scale(0.98); }
         .daily-hero-btn .tag { display: inline-block; background: var(--gold); color: #000; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 20px; margin-bottom: 10px; }
         .daily-hero-btn h2 { margin: 0 0 5px 0; font-size: 22px; color: var(--gold-light); }
         .daily-hero-btn p { margin: 0; font-size: 13px; color: #94a3b8; }
         
-        /* 서브 메뉴 그리드 */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .menu-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px 10px; text-align: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.2s; }
         .menu-card:active { background-color: #f8fafc; transform: scale(0.98); }
         .menu-icon { font-size: 28px; margin-bottom: 8px; }
         .menu-title { font-size: 15px; font-weight: bold; color: var(--primary-dark); margin: 0; }
 
-        /* 화면 3: 상세 결과 */
+        .install-guide-btn { background: #f1f5f9; color: var(--primary-dark); border: 1px solid #cbd5e1; padding: 15px; font-size: 14px; font-weight: bold; border-radius: 12px; cursor: pointer; width: 100%; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+
         .top-nav { display: flex; align-items: center; margin-bottom: 20px; margin-top: 10px; }
         .back-btn { background: none; border: none; font-size: 16px; font-weight: bold; color: var(--primary); cursor: pointer; padding: 5px 10px 5px 0; }
         .result-title { flex: 1; text-align: center; font-size: 18px; font-weight: 900; color: var(--primary-dark); margin-right: 40px; }
@@ -63,13 +64,22 @@
         .highlight { color: #b45309; font-weight: bold; background: linear-gradient(180deg, rgba(255,255,255,0) 60%, #fef08a 40%); }
         .hanja { font-size: 18px; font-weight: 900; color: #1e293b; }
 
-        /* 로또 블라인드 (데일리 메뉴에만 보임) */
-        .lotto-blind-section { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; display: none; }
+        .lotto-blind-section { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 20px; padding: 30px 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; display: none; }
         .lotto-blind-title { color: var(--gold-light); font-size: 18px; font-weight: bold; margin-bottom: 15px; }
-        .lotto-balls { display: none; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
-        .lotto-ball { width: 45px; height: 45px; background: radial-gradient(circle at 30% 30%, #ffd54f, #ffb300); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 18px; color: #453200; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* 5게임용 CSS */
+        .lotto-container { display: none; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .lotto-row { display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; }
+        .lotto-set-label { color: #94a3b8; font-size: 13px; font-weight: bold; width: 40px; text-align: left; }
+        .lotto-ball { width: 38px; height: 38px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #cbd5e1); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 16px; color: #334155; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        /* 명리 기반 고정 번호 특별 색상 (붉은색/금색 톤) */
+        .lotto-ball.fixed { background: radial-gradient(circle at 30% 30%, #ff8a65, #e64a19); color: white; border: 2px solid #ffccbc; }
 
         .ad-space { width: 100%; height: 60px; background-color: #e2e8f0; text-align: center; line-height: 60px; color: #64748b; font-size: 12px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed #cbd5e1; }
+        
+        /* 설치 모달 CSS */
+        #install-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .modal-content { background: white; padding: 30px; border-radius: 24px; width: 85%; max-width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -105,7 +115,6 @@
             </div>
         </div>
         
-        <!-- 실시간 참여자 수 (사용자 신뢰도 상승용 UI) -->
         <div class="live-visitors">
             🔥 오늘 운세를 확인한 사람: <span id="fake-visitor-count">1,245</span>명
         </div>
@@ -113,19 +122,17 @@
         <div class="ad-space" style="margin-top: 30px;">구글 애드센스 하단 배너</div>
     </div>
 
-    <!-- Screen 2: 메인 대시보드 (메뉴판) -->
+    <!-- Screen 2: 메인 대시보드 -->
     <div id="screen-dashboard" class="screen">
         <div class="welcome-msg" id="welcome-msg"></div>
         <div class="ad-space">구글 애드센스 상단 배너</div>
         
-        <!-- 매일 들어와야 하는 이유: 오늘의 운세 -->
         <div class="daily-hero-btn" onclick="openResult('daily')">
             <span class="tag">매일 밤 12시 업데이트</span>
-            <h2>🌟 오늘의 운세 & 로또 번호</h2>
+            <h2>🌟 오늘의 운세 & 로또 5게임</h2>
             <p>오늘 나의 명식에 흐르는 재물 파동과 맞춤 번호 확인</p>
         </div>
 
-        <!-- 서브 메뉴 -->
         <div class="menu-grid">
             <div class="menu-card" onclick="openResult('life')">
                 <div class="menu-icon">🔮</div>
@@ -144,6 +151,12 @@
                 <h3 class="menu-title">애정 및 대인운</h3>
             </div>
         </div>
+        
+        <!-- 앱 설치 안내 버튼 -->
+        <button class="install-guide-btn" onclick="showInstallModal()">
+            📱 내 폰에 사주/로또 앱 1초 만에 설치하기
+        </button>
+
         <div class="ad-space">구글 애드센스 하단 배너</div>
     </div>
 
@@ -159,26 +172,45 @@
             <div id="fortune-content"></div>
         </div>
 
-        <!-- 로또 섹션 (오늘의 운세에서만 등장) -->
+        <!-- 로또 섹션 (5게임 출력) -->
         <div class="lotto-blind-section" id="lotto-section">
-            <div class="lotto-blind-title">오늘의 맞춤 재물 번호 6자리</div>
-            <button class="action-btn" id="reveal-btn" onclick="revealLotto()" style="font-size: 16px;">🔒 자물쇠 열고 확인하기</button>
-            <div class="lotto-balls" id="lotto-balls"></div>
+            <div class="lotto-blind-title">오늘의 맞춤 재물 번호 6개 (총 5게임)</div>
+            <p style="color:#94a3b8; font-size:12px; margin-top:-5px; margin-bottom:15px;">※ 붉은색 번호는 귀하의 재물 오행에서 추출된 핵심 행운 번호입니다.</p>
+            <button class="action-btn" id="reveal-btn" onclick="revealLotto()" style="font-size: 16px;">🔒 자물쇠 열고 5게임 확인하기</button>
+            
+            <div class="lotto-container" id="lotto-container">
+                <!-- 자바스크립트로 5줄이 여기에 들어갑니다 -->
+            </div>
         </div>
         
         <div class="ad-space">구글 애드센스 하단 배너</div>
     </div>
 </div>
 
+<!-- 앱 설치 안내 모달 -->
+<div id="install-modal">
+    <div class="modal-content">
+        <h3 style="color:#1e293b; margin-top:0; text-align:center;">📱 홈 화면에 추가하기</h3>
+        <div style="font-size:15px; line-height:1.7; color:#475569; margin-bottom:25px;">
+            매일 편리하게 운세를 확인하세요!<br><br>
+            <strong>🍎 아이폰 (Safari)</strong><br>
+            1. 화면 하단의 <strong>[공유]</strong> 아이콘 터치<br>
+            2. 메뉴에서 <strong>'홈 화면에 추가'</strong> 선택<br><br>
+            <strong>🤖 안드로이드 (Chrome)</strong><br>
+            1. 화면 우측 상단의 <strong>[점 3개 ⋮]</strong> 터치<br>
+            2. 메뉴에서 <strong>'홈 화면에 추가'</strong> 선택
+        </div>
+        <button onclick="hideInstallModal()" class="action-btn" style="margin-top:0;">확인했습니다</button>
+    </div>
+</div>
+
 <script>
-    // 전역 변수 (유저 사주 정보 저장)
     let userSaju = {};
 
     const stems = ["갑(甲)", "을(乙)", "병(丙)", "정(丁)", "무(戊)", "기(己)", "경(庚)", "신(辛)", "임(壬)", "계(癸)"];
     const branches = ["자(子)", "축(丑)", "인(寅)", "묘(卯)", "진(辰)", "사(巳)", "오(午)", "미(未)", "신(申)", "유(酉)", "술(戌)", "해(亥)"];
     const elements = ["나무(木)", "나무(木)", "불(火)", "불(火)", "흙(土)", "흙(土)", "쇠(金)", "쇠(金)", "물(水)", "물(水)"];
     
-    // 오행별 재물(재성) 관계
     const wealthElements = {
         "나무(木)": { name: "흙(土)", numbers: [5, 10, 15, 20, 25, 30, 35, 40, 45], color: "노란색/황금색" },
         "불(火)": { name: "쇠(金)", numbers: [4, 9, 14, 19, 24, 29, 34, 39, 44], color: "흰색/금속성" },
@@ -187,7 +219,6 @@
         "물(水)": { name: "불(火)", numbers: [2, 7, 12, 17, 22, 27, 32, 37, 42], color: "붉은색/보라색" }
     };
 
-    // 난수 생성기
     function mulberry32(a) {
         return function() {
             var t = a += 0x6D2B79F5;
@@ -197,7 +228,6 @@
         }
     }
 
-    // 페이지 로드 시 가짜 방문자 수 세팅
     window.onload = function() {
         const now = new Date();
         const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -209,7 +239,6 @@
         document.getElementById('fake-visitor-count').innerText = currentVisitors.toLocaleString();
     };
 
-    // 1. 대시보드 입장 (사주 분석)
     function enterDashboard() {
         const birthInput = document.getElementById('birthDate').value;
         if(birthInput.length !== 8) { alert("생년월일 8자리를 정확히 입력해주세요!"); return; }
@@ -241,14 +270,12 @@
         window.scrollTo(0, 0);
     }
 
-    // 2. 각 메뉴별 결과 화면 열기 (텍스트 대폭 강화 및 날짜 적용)
     function openResult(menuType) {
         const today = new Date();
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
         const date = today.getDate();
         
-        // 날짜 텍스트 생성
         const dateStr = `${year}년 ${month}월 ${date}일`;
         const seedDateStr = year + "" + month + "" + date;
         
@@ -281,42 +308,24 @@
             contentHTML = `
                 <p><strong>[타고난 본성과 인생의 큰 그림]</strong><br>
                 정통 명리학 만세력 분석 결과, 귀하를 대표하는 핵심 오행은 <span class="highlight">${userSaju.element}</span>입니다. ${userSaju.element}의 기운을 품고 태어난 분들은 겉보기에는 온화하고 부드러워 보일지 모르나, 그 내면에는 엄청난 생명력과 한 번 정한 목표를 끝까지 관철해 내는 무서운 끈기가 자리 잡고 있습니다.</p>
-                
-                <p><strong>[초년과 중년의 운로 흐름]</strong><br>
-                귀하의 사주 명식은 전형적인 '대기만성(大器晩成)'의 구조를 띠고 있습니다. 인생의 초반기에는 남들보다 조금 더 많은 시행착오와 경험을 거치며 삶의 지혜를 축적하게 됩니다. 하지만 중년의 시기에 접어들면서, 그동안 내렸던 깊은 뿌리가 거대한 숲을 이루듯 재물과 명예가 매우 안정적이고 단단하게 안착하게 됩니다.</p>
-
-                <p><strong>[평생의 조언]</strong><br>
-                당장의 결과가 눈에 보이지 않는다고 해서 스스로를 의심하지 마십시오. 귀하의 운명은 시간이 지날수록 빛을 발하는 묵직한 황금과도 같습니다. 타인에게 베푸는 작은 선의가 훗날 큰 귀인(貴人)으로 돌아오는 사주이니, 주변 사람들과의 인연을 소중히 가꾸는 것이 평생의 큰 무기가 될 것입니다.</p>
             `;
-
         } else if(menuType === 'wealth') {
             title = "💰 올해의 금전운";
             contentHTML = `
                 <p><strong>[올해의 재물 창고 분석]</strong><br>
-                올 한 해 귀하의 금전운은 '창고에 곡식을 차곡차곡 쌓아 올리는 풍요의 기운'을 품고 있습니다. 하늘에서 갑자기 뚝 떨어지는 벼락부자나 일확천금보다는, 귀하가 작년부터 꾸준히 준비해 오거나 구축해 놓은 작은 수익 파이프라인들이 모여 마침내 큰 강줄기를 이루는 형국입니다.</p>
-                
-                <p><strong>[재물 증식의 핵심 전략]</strong><br>
-                올해는 돈을 버는 것만큼이나 '지키는 것'이 중요한 해입니다. 사주에 들어온 재물운이 강력한 만큼, 이를 탐내는 기운도 함께 존재합니다. 충동적인 소비나 빚을 내어 진행하는 무리한 투자는 긍정적인 운기를 크게 깎아내릴 수 있습니다. 확실히 아는 분야, 손에 잡히는 자산에 집중할 때 기대 이상의 큰 부를 쟁취할 수 있습니다.</p>
+                올 한 해 귀하의 금전운은 '창고에 곡식을 차곡차곡 쌓아 올리는 풍요의 기운'을 품고 있습니다. 하늘에서 갑자기 뚝 떨어지는 벼락부자나 일확천금보다는, 작년부터 꾸준히 준비해 오거나 구축해 놓은 파이프라인들이 모여 마침내 큰 강줄기를 이루는 형국입니다.</p>
             `;
-
         } else if(menuType === 'career') {
             title = "💼 직장 및 사업운";
             contentHTML = `
                 <p><strong>[사회적 성취와 명예운]</strong><br>
                 귀하의 능력을 제대로 인정받을 수 있는 넓은 무대가 서서히 열리고 있습니다. 직장 내에서는 그동안의 노고를 보상받는 승진이나 유리한 부서 이동의 기회가 있으며, 사업을 하시는 분이라면 새로운 판로가 개척되거나 막혀있던 자금 줄이 트이는 시기입니다.</p>
-                
-                <p><strong>[성공을 위한 처세술]</strong><br>
-                올해 사회운의 핵심 키워드는 '협력과 상생'입니다. 독불장군처럼 혼자 모든 것을 해결하려 하기보다는, 귀하의 부족한 점을 채워줄 수 있는 동료나 파트너와 적극적으로 소통하십시오. 내가 먼저 손을 내밀 때, 운명은 반드시 귀하를 돕는 든든한 귀인을 보내줄 것입니다.</p>
             `;
-
         } else if(menuType === 'love') {
             title = "❤️ 애정 및 대인운";
             contentHTML = `
                 <p><strong>[인연과 관계의 흐름]</strong><br>
                 올해 귀하의 인연 운은 '물 흐르듯 자연스러운 만남과 관계의 깊어짐'을 예고하고 있습니다. 싱글이신 분이라면 억지로 인연을 찾아 헤매기보다는 본인의 일상, 취미, 자기계발에 집중할 때 톱니바퀴처럼 딱 맞아떨어지는 상대를 만나게 됩니다.</p>
-                
-                <p><strong>[기존 관계의 발전]</strong><br>
-                이미 짝이 있거나 가정을 꾸리신 분이라면, 서로에 대한 신뢰가 한층 더 단단해지는 시기입니다. 다만 사소한 오해가 커지지 않도록, 마음속에 있는 말을 담아두기보다는 부드러운 언어로 자주 표현하는 것이 귀하의 대인관계 운을 최상으로 끌어올리는 비결입니다.</p>
             `;
         }
 
@@ -327,7 +336,7 @@
         if(showLotto) {
             lottoSection.style.display = 'block';
             document.getElementById('reveal-btn').style.display = 'block';
-            document.getElementById('lotto-balls').style.display = 'none';
+            document.getElementById('lotto-container').style.display = 'none';
         } else {
             lottoSection.style.display = 'none';
         }
@@ -337,43 +346,70 @@
         window.scrollTo(0, 0);
     }
 
-    // 3. 로또 번호 생성
+    // 3. 5게임 로또 번호 생성 로직
     function generateLotto(seed) {
-        let lottoNumbers = [];
-        let wealthNumsPool = [...userSaju.wealth.numbers];
-        wealthNumsPool.sort(() => Math.random() - 0.5); 
-        
-        lottoNumbers.push(wealthNumsPool[0]);
-        lottoNumbers.push(wealthNumsPool[1]);
-
         const randLotto = mulberry32(seed + 999);
-        while(lottoNumbers.length < 6) {
-            let num = Math.floor(randLotto() * 45) + 1;
-            if(!lottoNumbers.includes(num)) lottoNumbers.push(num);
-        }
-        lottoNumbers.sort((a,b) => a - b);
+        let wealthNumsPool = [...userSaju.wealth.numbers];
         
-        const ballsContainer = document.getElementById('lotto-balls');
-        ballsContainer.innerHTML = '';
-        lottoNumbers.forEach(num => {
-            const ball = document.createElement('div');
-            ball.className = 'lotto-ball';
-            ball.innerText = num;
-            ballsContainer.appendChild(ball);
-        });
+        // 내 재물 숫자 풀을 섞고, 그 중 2~3개를 오늘의 '고정 행운 번호'로 발췌
+        wealthNumsPool.sort(() => randLotto() - 0.5); 
+        const fixedCount = Math.floor(randLotto() * 2) + 2; // 2개 또는 3개
+        const fixedNumbers = wealthNumsPool.slice(0, fixedCount);
+
+        const container = document.getElementById('lotto-container');
+        container.innerHTML = '';
+
+        // 5게임 생성 루프
+        const setNames = ['A', 'B', 'C', 'D', 'E'];
+        for(let i=0; i<5; i++) {
+            let lottoNumbers = [...fixedNumbers]; // 행운 번호 기본 삽입
+            
+            // 나머지 번호를 45 안에서 중복 없이 채우기 (각 게임마다 다르게)
+            while(lottoNumbers.length < 6) {
+                let num = Math.floor(randLotto() * 45) + 1;
+                if(!lottoNumbers.includes(num)) lottoNumbers.push(num);
+            }
+            lottoNumbers.sort((a,b) => a - b);
+            
+            // HTML 생성
+            const row = document.createElement('div');
+            row.className = 'lotto-row';
+            
+            const label = document.createElement('div');
+            label.className = 'lotto-set-label';
+            label.innerText = setNames[i];
+            row.appendChild(label);
+
+            lottoNumbers.forEach(num => {
+                const ball = document.createElement('div');
+                ball.className = 'lotto-ball';
+                if(fixedNumbers.includes(num)) {
+                    ball.classList.add('fixed'); // 행운 번호는 붉은색 강조
+                }
+                ball.innerText = num;
+                row.appendChild(ball);
+            });
+            container.appendChild(row);
+        }
     }
 
-    // 4. 로또 번호 공개 버튼
     function revealLotto() {
         document.getElementById('reveal-btn').style.display = 'none';
-        document.getElementById('lotto-balls').style.display = 'flex';
+        document.getElementById('lotto-container').style.display = 'flex';
     }
 
-    // 5. 뒤로 가기
     function goBack() {
         document.getElementById('screen-result').classList.remove('active');
         document.getElementById('screen-dashboard').classList.add('active');
         window.scrollTo(0, 0);
+    }
+
+    function showInstallModal() {
+        document.getElementById('install-modal').style.display = 'flex';
+    }
+
+    function hideInstallModal() {
+        document.getElementById('install-modal').style.display = 'none';
     }
 </script>
 
