@@ -84,7 +84,7 @@
 <div class="app-container">
     <div class="hero-section">
         <h1>나의 사주, 나의 로또</h1>
-        <div class="hero-sub">60갑자 정통 만세력 맞춤 솔루션 (v9.0)</div>
+        <div class="hero-sub">60갑자 정통 모듈형 맞춤 솔루션 (v9.5)</div>
     </div>
 
     <!-- Screen 1: 정보 입력 -->
@@ -111,11 +111,9 @@
                 <button class="action-btn" onclick="enterDashboard()">명식 분석하고 입장하기</button>
             </div>
         </div>
-        
         <div class="live-visitors">
             🔥 오늘 운세를 확인한 사람: <span id="fake-visitor-count">1,245</span>명
         </div>
-        
         <div class="ad-space" style="margin-top: 30px;">구글 애드센스 하단 배너</div>
     </div>
 
@@ -152,7 +150,6 @@
         <button class="install-guide-btn" onclick="showInstallModal()">
             📱 내 폰에 사주/로또 앱 1초 만에 설치하기
         </button>
-
         <div class="ad-space">구글 애드센스 하단 배너</div>
     </div>
 
@@ -172,10 +169,8 @@
             <div class="lotto-blind-title">오늘의 맞춤 재물 번호 6개 (총 5게임)</div>
             <p style="color:#94a3b8; font-size:12px; margin-top:-5px; margin-bottom:15px;">※ 붉은색 번호는 명식의 재성(財星)에서 추출된 핵심 행운 수입니다.</p>
             <button class="action-btn" id="reveal-btn" onclick="revealLotto()" style="font-size: 16px;">🔒 자물쇠 열고 5게임 확인하기</button>
-            
             <div class="lotto-container" id="lotto-container"></div>
         </div>
-        
         <div class="ad-space">구글 애드센스 하단 배너</div>
     </div>
 </div>
@@ -204,20 +199,68 @@
     const branches = ["자", "축", "인", "묘", "진", "사", "오", "미", "신", "유", "술", "해"];
     const branchesHanja = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
     
+    // 1. 오행별 풍부한 기본 해설 (천간 베이스)
+    const elementDB = {
+        "나무(木)": {
+            life: `<p>명식에 뿌리내린 <b>곡직(曲直)</b>의 성정으로 인해, 귀하는 거목처럼 위로 뻗어나가려는 강한 자립심과 기획력을 타고났습니다. 온화하고 인자한 성품을 지녔으나 내면에는 목표를 끝까지 밀어붙이는 생명력이 자리 잡고 있습니다. 대기만성형 명식으로 중년 이후 사회적 무대가 크게 확장됩니다.</p>`,
+            wealth: `<p>주식이나 코인 같은 유동성이 크고 변동성이 심한 자산보다는, 땅에 뿌리를 단단히 내리는 부동산이나 장기적인 가치 투자에 재성이 가장 안정적으로 모여듭니다. 매달 일정한 금액을 묶어두는 투자가 평생의 부를 책임집니다.</p>`,
+            career: `<p>타인을 가르치고 기르는 교육, 기획, 건축, 디자인 또는 활인업(活人業)에서 크게 두각을 나타냅니다. 스스로 옳다고 생각하는 바를 밀어붙이려는 고집을 버리고 유연하게 소통할 때 귀인이 따릅니다.</p>`,
+            love: `<p>나무가 그늘을 만들어 주듯, 귀하의 포용력과 다정함에 기대려는 사람들이 많습니다. 상대방을 가르치려 하기보다 묵묵히 들어주고 공감해 주는 것만으로도 최고의 배우자가 됩니다.</p>`
+        },
+        "불(火)": {
+            life: `<p>명식을 비추는 <b>염상(炎上)</b>의 기운을 타고난 귀하는, 만물을 밝히는 태양처럼 열정적이고 명예를 중시하는 성품입니다. 상황 판단이 빠르고 언변이 뛰어나 화려한 감각이 돋보입니다. 운의 흐름에 올라탔을 때 가장 빠르고 크게 성공할 수 있는 명식입니다.</p>`,
+            wealth: `<p>귀하의 반짝이는 아이디어나 정보력이 곧 현금으로 직결됩니다. 트렌드에 민감한 IT, 방송, 금융 투자 분야에서 횡재수가 발동하기 쉬우며, 과시성 소비만 경계한다면 평생 현금흐름이 마르지 않습니다.</p>`,
+            career: `<p>남들 앞에 서서 스포트라이트를 받거나 첨단 유행을 선도하는 직업군에서 관성이 빛을 발합니다. 특유의 기획력과 프레젠테이션 능력으로 조직 내에서 에이스 대우를 받게 됩니다.</p>`,
+            love: `<p>감정을 숨기지 못하고 솔직하게 표현하는 열정적인 매력으로 이성의 인기를 단숨에 끕니다. 일상 속에서 작고 따뜻한 말 한마디를 자주 건네는 것이 관계를 평생 유지하는 비결입니다.</p>`
+        },
+        "흙(土)": {
+            life: `<p>명식 중심에 <b>가색(稼穡)</b> 기운이 묵직하게 자리 잡은 귀하는, 만물을 포용하는 넓은 대지와 같습니다. 중재 능력이 뛰어나고 깊은 신용을 주는 듬직한 사주입니다. 초년의 고생도 단단한 기반을 다지는 과정일 뿐, 인생 후반기로 갈수록 재물 창고가 무성해집니다.</p>`,
+            wealth: `<p>흙이 물을 가두어 거대한 댐을 만들듯, 철저한 관리와 저축을 통해 거대한 자산을 형성합니다. 부동산 임대업이나 안정적인 우량주에서 큰 이문이 남으며, 지인과의 금전거래만 피한다면 완벽합니다.</p>`,
+            career: `<p>조직 내에서 의견을 조율하고 다독이는 중간 관리자나 리더의 자리에 오를 운명입니다. 묵묵히 일하는 것도 좋지만 가끔은 본인의 성과를 명확히 윗선에 어필하는 요령이 필요합니다.</p>`,
+            love: `<p>한 번 마음을 주면 변치 않는 우직한 다정함과 순정파 기질을 지녔습니다. 다소 무뚝뚝해 보일 수 있으니 가끔은 서프라이즈 이벤트를 기획하여 관계에 신선한 자극을 주는 것이 좋습니다.</p>`
+        },
+        "쇠(金)": {
+            life: `<p>서늘하고 예리한 <b>종혁(從革)</b>의 기운을 띤 귀하는, 불순물을 걸러낸 강철 같은 의지력을 소유하셨습니다. 공과 사가 명확하고 한 번 맺은 의리는 지키는 강직한 성품입니다. 인생의 고비마다 타협보다는 정면 승부를 택하여 기어코 길을 개척해 냅니다.</p>`,
+            wealth: `<p>도끼로 나무를 베어 재목을 취하듯 귀하의 빠르고 정확한 판단력이 곧 수익이 됩니다. 예산 관리에 철저하지만, 한 번 확신이 들면 몰빵 투자를 하는 경향이 있으니 반드시 분산 투자를 원칙으로 삼으십시오.</p>`,
+            career: `<p>군, 경, 법조계, 의료, 금융 등 원칙과 룰이 명확하고 정확성을 요하는 곳에서 관운이 핍니다. 일처리가 너무 깔끔해 차갑다는 오해를 살 수 있으니 쿠션 화법을 곁들이면 최고의 리더가 됩니다.</p>`,
+            love: `<p>겉으로는 차갑고 빈틈없어 보이지만 내 사람이라고 생각하면 모든 것을 내어주는 외강내유형입니다. 사랑하는 사람 앞에서는 논리로 이기려 들지 말고 부드러운 스킨십으로 다가가십시오.</p>`
+        },
+        "물(水)": {
+            life: `<p>끊임없이 흐르는 <b>윤하(潤下)</b> 기운을 지닌 귀하는, 어떠한 그릇에도 형태를 맞추는 물처럼 극강의 유연성과 지혜를 타고났습니다. 사색을 즐기며 천재성이 번뜩이는 사주입니다. 변화를 두려워하지 않는 성향 덕분에 시대의 흐름을 잘 타고 평생 융통성 있게 살아갑니다.</p>`,
+            wealth: `<p>현금을 쥐고 있기보다는 이곳저곳으로 융통하려는 기질이 강합니다. 국내외 주식, 지적 재산권 등 포트폴리오를 다각화하여 리스크를 분산시키는 전략이 재물을 눈덩이처럼 불려줍니다.</p>`,
+            career: `<p>한 곳에 얽매이거나 반복되는 단순 업무보다는 자유롭게 이동하거나 해외를 무대로 삼을 때 능력을 200% 발휘합니다. 아이디어를 체계화해 줄 꼼꼼한 멘토를 곁에 두는 것이 성공의 열쇠입니다.</p>`,
+            love: `<p>뛰어난 공감 능력과 부드러운 카리스마로 이성을 매혹시킵니다. 본인의 속마음을 철저히 숨기기보다는 "나 지금 이런 기분이야"라고 투명하게 소통할 때 애정운이 가장 크게 상승합니다.</p>`
+        }
+    };
+
+    // 2. 동물(지지)별 디테일한 실생활 맞춤 조언 DB
+    const branchDB = {
+        "자": { animal: "쥐", tip: "<b>[자(子)의 개운법]</b> 예민하고 직관력이 뛰어난 기운입니다. 생각이 너무 많아 밤잠을 설칠 수 있으니, 자기 전 스마트폰을 멀리하고 숙면을 취하는 것이 최고의 액뜸입니다. 따뜻한 족욕이 횡재수를 불러옵니다." },
+        "축": { animal: "소", tip: "<b>[축(丑)의 개운법]</b> 우직하고 끈기가 대단한 기운입니다. 겉으로는 참지만 속으로 화를 삭이는 경향이 있어 위장 장애가 오기 쉽습니다. 스트레스가 쌓일 땐 흙길을 맨발로 걷는 어싱(Earthing)이 가장 좋습니다." },
+        "인": { animal: "호랑이", tip: "<b>[인(寅)의 개운법]</b> 리더십과 독립심이 강한 기운입니다. 명예를 중시하다 보니 가끔 독단적인 결정을 내릴 수 있습니다. 혈압이나 심장 쪽에 무리가 가지 않도록, 등산이나 숲길 산책으로 에너지를 발산하십시오." },
+        "묘": { animal: "토끼", tip: "<b>[묘(卯)의 개운법]</b> 예술적 감각이 뛰어나고 싹싹한 기운입니다. 귀가 얇아 남의 말에 잘 휘둘릴 수 있으니 중요한 계약은 하루를 묵힌 뒤 결정하세요. 시력을 보호하고 안구 건조증을 관리하는 것이 금전운을 지킵니다." },
+        "진": { animal: "용", tip: "<b>[진(辰)의 개운법]</b> 스케일이 크고 이상이 높은 기운입니다. 허황된 꿈을 좇다 현실을 놓칠 수 있으니, 매일 아침 거울을 보며 오늘의 현실적인 목표를 3개씩 소리 내어 말하는 습관이 귀하를 대부호로 이끕니다." },
+        "사": { animal: "뱀", tip: "<b>[사(巳)의 개운법]</b> 지혜롭고 상황 판단이 매우 빠른 기운입니다. 완벽주의 성향 탓에 스스로를 피곤하게 만들 수 있습니다. 화려한 색상의 속옷이나 양말을 착용하면 숨겨진 도화(매력)와 재물운이 함께 폭발합니다." },
+        "오": { animal: "말", tip: "<b>[오(午)의 개운법]</b> 활동적이고 스포트라이트를 즐기는 기운입니다. 기분이 좋으면 지갑이 쉽게 열리니 신용카드보다는 체크카드를 쓰십시오. 심장 박동을 올리는 유산소 운동이 관운(직장운)을 최상으로 끌어올립니다." },
+        "미": { animal: "양", tip: "<b>[미(未)의 개운법]</b> 꼼꼼하고 자존심이 강한 기운입니다. 타인에게 지기 싫어하는 마음이 스트레스로 작용할 수 있습니다. 노란색이나 황금색 소품을 지니고, 달콤한 디저트로 기분을 전환할 때 운이 부드럽게 풀립니다." },
+        "신": { animal: "원숭이", tip: "<b>[신(申)의 개운법]</b> 다재다능하고 눈치가 백단인 기운입니다. 끈기가 부족해 용두사미가 될 수 있으니, 작더라도 끝까지 마무리하는 습관을 들이세요. 반짝이는 은색 시계나 반지를 착용하면 귀인을 끌어당깁니다." },
+        "유": { animal: "닭", tip: "<b>[유(酉)의 개운법]</b> 직관력이 찌르듯 예리하고 깔끔한 기운입니다. 날카로운 말투로 주변에 상처를 줄 수 있으니 의식적으로 둥글게 말하는 연습이 필요합니다. 치아와 뼈 건강을 관리하는 것이 재물 창고를 튼튼하게 합니다." },
+        "술": { animal: "개", tip: "<b>[술(戌)의 개운법]</b> 책임감이 강하고 의리를 목숨처럼 여기는 기운입니다. 오지랖으로 인해 남의 짐까지 떠안아 피곤해질 수 있습니다. 향이 좋은 차를 마시며 나만의 독립된 공간에서 휴식하는 시간이 반드시 필요합니다." },
+        "해": { animal: "돼지", tip: "<b>[해(亥)의 개운법]</b> 포용력이 넓고 식복(먹을 복)을 타고난 기운입니다. 거절을 잘 못해 손해를 볼 수 있으니 단호하게 'No'라고 말하는 연습을 하세요. 물가나 강변을 산책하며 마음을 비울 때 기발한 돈벌이 아이디어가 떠오릅니다." }
+    };
+
     const elementsMap = {
         "갑": { elem: "나무(木)", colorPrefix: "푸른", wealthElem: "흙(土)", wealthColor: "황금색/노란색", wealthDir: "중앙(中央)", nums: [5, 10, 15, 20, 25, 30, 35, 40, 45] },
         "을": { elem: "나무(木)", colorPrefix: "푸른", wealthElem: "흙(土)", wealthColor: "황금색/노란색", wealthDir: "중앙(中央)", nums: [5, 10, 15, 20, 25, 30, 35, 40, 45] },
-        "병": { elem: "불(火)", colorPrefix: "붉은", wealthElem: "쇠(金)", wealthColor: "흰색/금속성", wealthDir: "서쪽(西)", nums: [4, 9, 14, 19, 24, 29, 34, 39, 44] },
-        "정": { elem: "불(火)", colorPrefix: "붉은", wealthElem: "쇠(金)", wealthColor: "흰색/금속성", wealthDir: "서쪽(西)", nums: [4, 9, 14, 19, 24, 29, 34, 39, 44] },
-        "무": { elem: "흙(土)", colorPrefix: "황금", wealthElem: "물(水)", wealthColor: "검은색/어두운 톤", wealthDir: "북쪽(北)", nums: [1, 6, 11, 16, 21, 26, 31, 36, 41] },
-        "기": { elem: "흙(土)", colorPrefix: "황금", wealthElem: "물(水)", wealthColor: "검은색/어두운 톤", wealthDir: "북쪽(北)", nums: [1, 6, 11, 16, 21, 26, 31, 36, 41] },
+        "병": { elem: "불(火)", colorPrefix: "붉은", wealthElem: "쇠(金)", wealthColor: "흰색/은색", wealthDir: "서쪽(西)", nums: [4, 9, 14, 19, 24, 29, 34, 39, 44] },
+        "정": { elem: "불(火)", colorPrefix: "붉은", wealthElem: "쇠(金)", wealthColor: "흰색/은색", wealthDir: "서쪽(西)", nums: [4, 9, 14, 19, 24, 29, 34, 39, 44] },
+        "무": { elem: "흙(土)", colorPrefix: "황금", wealthElem: "물(水)", wealthColor: "검은색", wealthDir: "북쪽(北)", nums: [1, 6, 11, 16, 21, 26, 31, 36, 41] },
+        "기": { elem: "흙(土)", colorPrefix: "황금", wealthElem: "물(水)", wealthColor: "검은색", wealthDir: "북쪽(北)", nums: [1, 6, 11, 16, 21, 26, 31, 36, 41] },
         "경": { elem: "쇠(金)", colorPrefix: "하얀", wealthElem: "나무(木)", wealthColor: "푸른색/녹색", wealthDir: "동쪽(東)", nums: [3, 8, 13, 18, 23, 28, 33, 38, 43] },
         "신": { elem: "쇠(金)", colorPrefix: "하얀", wealthElem: "나무(木)", wealthColor: "푸른색/녹색", wealthDir: "동쪽(東)", nums: [3, 8, 13, 18, 23, 28, 33, 38, 43] },
         "임": { elem: "물(水)", colorPrefix: "검은", wealthElem: "불(火)", wealthColor: "붉은색/보라색", wealthDir: "남쪽(南)", nums: [2, 7, 12, 17, 22, 27, 32, 37, 42] },
         "계": { elem: "물(水)", colorPrefix: "검은", wealthElem: "불(火)", wealthColor: "붉은색/보라색", wealthDir: "남쪽(南)", nums: [2, 7, 12, 17, 22, 27, 32, 37, 42] }
     };
-
-    const animalMap = ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"];
 
     function mulberry32(a) {
         return function() {
@@ -258,15 +301,14 @@
         const iljuName = sChar + bChar;
         const iljuHanja = stemsHanja[stemIndex] + branchesHanja[branchIndex];
         const meta = elementsMap[sChar];
-        const animal = animalMap[branchIndex];
+        const branchInfo = branchDB[bChar];
 
         userSaju = {
             birth: birthInput,
             iljuName: iljuName,
             iljuHanja: iljuHanja,
-            stemChar: sChar,
             branchChar: bChar,
-            symbol: `${meta.colorPrefix} ${animal}의 기운을 품은 ${iljuName}(${iljuHanja}) 일주`,
+            symbol: `${meta.colorPrefix} ${branchInfo.animal}의 기운을 품은 ${iljuName}(${iljuHanja}) 일주`,
             element: meta.elem,
             wealthElem: meta.wealthElem,
             wealthColor: meta.wealthColor,
@@ -275,7 +317,7 @@
             seed: parseInt(birthInput) + parseInt(document.getElementById('birthTime').value)
         };
 
-        document.getElementById('welcome-msg').innerHTML = `<span class="hanja">${userSaju.iljuHanja}</span> (${userSaju.iljuName}) 일주를 지니신 귀하,<br>정통 60갑자 만세력 분석이 완료되었습니다.`;
+        document.getElementById('welcome-msg').innerHTML = `<span class="hanja">${userSaju.iljuHanja}</span> (${userSaju.iljuName}) 일주를 지니신 귀하,<br>정통 60갑자 맞춤 DB 세팅이 완료되었습니다.`;
         
         document.getElementById('screen-input').classList.remove('active');
         document.getElementById('screen-dashboard').classList.add('active');
@@ -297,6 +339,10 @@
         
         const dailySeed = userSaju.seed + parseInt(seedDateStr);
         
+        // 데이터 조립 (천간의 풍부한 해설 + 지지의 디테일 팁)
+        const coreText = elementDB[userSaju.element];
+        const practicalTip = branchDB[userSaju.branchChar].tip;
+        
         if(menuType === 'daily') {
             title = "🌟 오늘의 운세";
             showLotto = true;
@@ -305,14 +351,14 @@
                     📅 오늘은 ${dateStr} 입니다.
                 </div>
                 <span class="section-title">오늘의 명식 파동과 총운</span>
-                <p><b>[${userSaju.symbol}]</b> 분석 결과, 오늘 ${dateStr}은 천간과 지지의 오행 에너지가 귀하의 명식 원국과 매끄럽게 교류하는 매우 긍정적인 하루입니다. 그동안 차곡차곡 쌓아온 정성이 비로소 실체적인 성과로 가시화되기 시작하며, 막혔던 거래나 대인관계에서 사이다 같은 해결책을 얻게 됩니다.</p>
+                <p><b>[${userSaju.symbol}]</b> 분석 결과, 오늘 ${dateStr}은 천간과 지지의 오행 에너지가 귀하의 명식 원국과 매끄럽게 교류하는 매우 긍정적인 하루입니다. 그동안 차곡차곡 쌓아온 정성이 비로소 실체적인 성과로 가시화되기 시작하며, 막혔던 거래나 대인관계에서 기분 좋은 해결책을 얻게 됩니다.</p>
                 
                 <span class="section-title">재성(財星) 활성화 파동</span>
-                <p>오늘 귀하의 재물 창고를 자극하는 오행은 <span class="highlight">'${userSaju.wealthElem}'</span> 기운입니다. 금전적 감각과 직관력이 예리해지는 날이니 판단을 미루지 마십시오. 오늘 하루 동안 <strong>${userSaju.wealthColor}</strong> 계열의 옷이나 소품을 착용하시고, <strong>${userSaju.wealthDir}</strong> 방향으로 이동하시면 흩어지는 재물 파동을 완벽히 흡수할 수 있습니다.</p>
+                <p>오늘 귀하의 재물 창고를 자극하는 오행은 <span class="highlight">'${userSaju.wealthElem}'</span> 기운입니다. 금전적 감각과 직관력이 예리해지는 날이니 판단을 미루지 마십시오. 오늘 하루 동안 <strong>${userSaju.wealthColor}</strong> 계열의 옷이나 소품을 활용하시고, <strong>${userSaju.wealthDir}</strong> 방향으로 이동하시면 흩어지는 재물 파동을 완벽히 흡수할 수 있습니다.</p>
 
                 <div class="practical-tip">
-                    <h4>🌟 60갑자 오늘의 실생활 개운법</h4>
-                    <p>오늘은 남들의 지적이나 조언에 즉각적으로 반응하기보다, <b>한 템포 천천히 생각하고 웃어넘기는 포용력</b>이 큰 복을 가져다줍니다. 아래에 추출된 5게임의 맞춤 번호는 오늘 귀하의 일주 명식과 완벽하게 공명하는 재물 숫자입니다. 긍정의 기운을 담아 행운을 얻어보세요.</p>
+                    <h4>🌟 60갑자 맞춤 오늘의 팁</h4>
+                    <p>${practicalTip}<br><br>아래에 추출된 5게임의 맞춤 번호는 오늘 귀하의 일주 명식과 완벽하게 공명하는 재물 숫자입니다. 긍정의 기운을 담아 행운을 얻어보세요.</p>
                 </div>
             `;
             generateLotto(dailySeed);
@@ -321,38 +367,41 @@
             title = "🔮 나의 평생 사주";
             contentHTML = `
                 <span class="section-title">60갑자 일주 원국(原局) 해설</span>
-                <p>귀하는 <b>[${userSaju.symbol}]</b>를 타고나셨습니다. 타고난 본성이 온화하고 기품이 있으며, 한 번 결심한 목표는 어떠한 난관이 들이닥쳐도 묵직하게 밀어붙이는 무서운 끈기와 자립심을 보유하고 계십니다.</p>
-
-                <span class="section-title">인생 전체의 운로(運路) 흐름</span>
-                <p>전형적인 '대기만성(大器晩成)'의 정통 명식입니다. 청년기에는 다소간의 시행착오와 수련의 과정을 거치지만, 중년 이후부터 식상생재(食傷生財)와 관인상생(官印相生)의 기운이 차례로 개화하여 재물과 사회적 명예가 단단하게 안착하게 됩니다.</p>
-
+                ${coreText.life}
                 <div class="practical-tip">
                     <h4>🌟 평생 마인드 컨트롤 & 건강 개운법</h4>
-                    <p><b>스스로에 대한 지나친 완벽주의를 내려놓는 것</b>이 삶을 훨씬 평화롭게 만듭니다. 신체적으로는 ${userSaju.element} 기운의 균형을 위해 규칙적인 걷기 운동과 따뜻한 수분 섭취를 생활화하시고, 스트레스가 쌓일 때는 오롯이 혼자만의 조용한 시간을 가지는 것이 최고의 처방입니다.</p>
+                    <p>${practicalTip}</p>
                 </div>
             `;
         } else if(menuType === 'wealth') {
             title = "💰 올해의 금전운";
             contentHTML = `
                 <span class="section-title">올해의 재물 창고 및 재성(財星) 분석</span>
-                <p><b>[${userSaju.iljuName}]</b> 일주인 귀하의 올해 금전운은 '창고에 곡식을 가득 쌓아 올리는 풍요의 기운'을 머금고 있습니다. 일확천금보다는, 작년부터 준비해 온 유동성 파이프라인이나 안정 자산이 효자 노릇을 하게 됩니다.</p>
-
+                ${coreText.wealth}
                 <div class="practical-tip">
-                    <h4>🌟 실용적인 투자 & 소비 전략</h4>
-                    <p>올해는 벌어들인 자산을 잘 지켜내는 '방어적 투자'가 수익률을 극대화합니다. 남의 말에 혹해 진행하는 <b>투기성 종목이나 지인과의 금전거래는 철저히 차단</b>하시고, 확실히 검증된 우량 자산이나 자기계발에 투자하십시오.</p>
+                    <h4>🌟 60갑자 맞춤 금전 개운법</h4>
+                    <p>${practicalTip}</p>
                 </div>
             `;
         } else if(menuType === 'career') {
             title = "💼 직장 및 사업운";
             contentHTML = `
-                <span class="section-title">관성(官星)과 사회적 성취</span><p>귀하의 독보적인 전문성과 해결사 기질이 조직 내부와 시장에서 빛을 발하는 시기입니다. 승진, 이직, 새로운 프로젝트의 우위 점유 등 명예를 높일 수 있는 기회가 찾아옵니다.</p>
-                <div class="practical-tip"><h4>🌟 직장/사업장 처세술</h4><p>혼자서 모든 짐을 떠안기보다 <b>팀원들에게 권한을 분배하고 부드러운 쿠션 화법으로 소통</b>할 때 귀하를 돕는 강력한 귀인(貴人)이 나타납니다.</p></div>
+                <span class="section-title">관성(官星)과 사회적 성취</span>
+                ${coreText.career}
+                <div class="practical-tip">
+                    <h4>🌟 조직 내 처세술 조언</h4>
+                    <p>${practicalTip}</p>
+                </div>
             `;
         } else if(menuType === 'love') {
             title = "❤️ 애정 및 대인운";
             contentHTML = `
-                <span class="section-title">인연과 합(合)의 흐름</span><p><b>[${userSaju.iljuName}]</b> 일주 특유의 깊은 포용력과 다정함이 이성에게 강한 신뢰감을 전달합니다. 싱글이신 분은 일상과 취미 영역에서 뜻밖의 운명적 인연을 만나게 됩니다.</p>
-                <div class="practical-tip"><h4>🌟 관계를 지키는 꿀팁</h4><p>서운한 감정이 생겼을 때 혼자 속으로 삭이지 말고, <b>"나는 이런 점이 조금 아쉬웠어"라고 투명하고 부드럽게 표현</b>할 때 애정전선에 금이 가지 않고 합이 더욱 단단해집니다.</p></div>
+                <span class="section-title">인연과 합(合)의 흐름</span>
+                ${coreText.love}
+                <div class="practical-tip">
+                    <h4>🌟 관계를 지키는 핵심 조언</h4>
+                    <p>${practicalTip}</p>
+                </div>
             `;
         }
 
